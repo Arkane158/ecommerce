@@ -1,21 +1,35 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
+import 'package:ecommerce/model/api/api_manager.dart';
+import 'package:ecommerce/model/ui/dialoge_utils.dart';
+import 'package:ecommerce/model/ui/login/login_screen.dart';
 import 'package:ecommerce/model/ui/widgets/custom_elevated_button.dart';
 import 'package:ecommerce/model/ui/widgets/custom_form_field.dart';
 import 'package:ecommerce/model/ui/widgets/form_label.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class RegisterScreen extends StatelessWidget {
-  static const String screenName = "RegisterScreen";
-  RegisterScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  static const String screenName = "SignUpScreen";
+  const SignUpScreen({super.key});
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final formKey = GlobalKey<FormState>();
+
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   TextEditingController phoneController = TextEditingController();
+
   TextEditingController passwordConfirmController = TextEditingController();
+
   TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,6 +109,21 @@ class RegisterScreen extends StatelessWidget {
                         },
                         hideText: true,
                       ),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                                context, LoginScreen.screeenName);
+                          },
+                          child: Text(
+                            "Already Have Account? Sign In",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.blue),
+                          ),
+                        ),
+                      ),
                       CustomElevatedButton(
                           onPressed: () {
                             register();
@@ -111,9 +140,32 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  register() {
+  register() async {
     if (formKey.currentState?.validate() == false) {
       return;
+    }
+    DialogeUtils.showProgressDialog(context, 'loading...');
+    try {
+      var response = await ApiManager.register(
+          nameController.text,
+          emailController.text,
+          passwordController.text,
+          passwordConfirmController.text,
+          phoneController.text);
+      DialogeUtils.hideDialog(context);
+      if (response.errors != null) {
+        DialogeUtils.showMessage(context, response.mergeErrors(),
+            posActionTitle: 'ok');
+        return;
+      }
+      DialogeUtils.showMessage(context, 'Login successful',
+          posActionTitle: 'ok');
+    } catch (e) {
+      DialogeUtils.hideDialog(context);
+      DialogeUtils.showMessage(
+        context,
+        'Error ${e.toString()}',
+      );
     }
   }
 }

@@ -1,11 +1,24 @@
+import 'package:ecommerce/model/api/api_manager.dart';
+import 'package:ecommerce/model/ui/dialoge_utils.dart';
+import 'package:ecommerce/model/ui/sign_up/sign_up_screen.dart';
 import 'package:ecommerce/model/ui/widgets/custom_elevated_button.dart';
 import 'package:ecommerce/model/ui/widgets/custom_form_field.dart';
 import 'package:ecommerce/model/ui/widgets/form_label.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const String screeenName = "LoginScreen";
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,54 +33,85 @@ class LoginScreen extends StatelessWidget {
             Image.asset('assets/images/route_logo.png'),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Text(
-                        'Welcome Back To Route',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                fontSize: 25, fontWeight: FontWeight.w600),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Center(
+                        child: Text(
+                          'Welcome Back To Route',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  fontSize: 25, fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        'Please sign in with your email',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontSize: 15),
+                      Center(
+                        child: Text(
+                          'Please sign in with your email',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontSize: 15),
+                        ),
                       ),
-                    ),
-                    const FormLabel(formLabel: 'User Name'),
-                    const CustomFormField(
-                      hintText: 'Enter Your User Name',
-                    ),
-                    const FormLabel(formLabel: 'Email'),
-                    const CustomFormField(hintText: 'Enter Your Email'),
-                    Center(
-                      child: Text(
-                        'Forgot Password',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontSize: 15),
+                      const FormLabel(formLabel: 'Email'),
+                      CustomFormField(
+                        hintText: 'Enter Your Email',
+                        controller: emailController,
+                        type: TextInputType.emailAddress,
+                        validator: (text) {
+                          if (text == null || text.trim().isEmpty) {
+                            return 'Email is required';
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                    CustomElevatedButton(onPressed: () {}, label: 'Log in'),
-                    Center(
-                      child: Text(
-                        "Don't have an account? Create Account",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(fontSize: 15),
+                      const FormLabel(formLabel: 'Password'),
+                      CustomFormField(
+                        hintText: 'Enter Your Password',
+                        controller: passwordController,
+                        validator: (text) {
+                          if (text == null || text.trim().isEmpty) {
+                            return 'Password is required';
+                          }
+                          return null;
+                        },
+                        hideText: true,
                       ),
-                    )
-                  ],
+                      Center(
+                        child: Text(
+                          'Forgot Password',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontSize: 15),
+                        ),
+                      ),
+                      Center(
+                        child: InkWell(
+                          onTap: () => {
+                            Navigator.pushReplacementNamed(
+                                context, SignUpScreen.screenName)
+                          },
+                          child: Text(
+                            "Don't have an account? Create Account",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontSize: 15, color: Colors.blue),
+                          ),
+                        ),
+                      ),
+                      CustomElevatedButton(
+                          onPressed: () {
+                            signIn();
+                          },
+                          label: 'Log in'),
+                    ],
+                  ),
                 ),
               ),
             )
@@ -75,5 +119,15 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  signIn() async {
+    if (formKey.currentState?.validate() == false) {
+      return;
+    }
+    DialogeUtils.showMessage(context, 'Loading...');
+    var response =
+        await ApiManager.login(emailController.text, passwordController.text);
+    DialogeUtils.showMessage(context, '${response.token}');
   }
 }

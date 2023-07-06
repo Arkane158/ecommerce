@@ -1,6 +1,6 @@
 import 'package:ecommerce/model/ui/login/login_screen.dart';
 import 'package:ecommerce/model/ui/my_theme.dart';
-import 'package:ecommerce/model/ui/register/register_screen.dart';
+import 'package:ecommerce/model/ui/sign_up/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,9 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         LoginScreen.screeenName: (context) => const LoginScreen(),
-        RegisterScreen.screenName: (context) => RegisterScreen(),
+        SignUpScreen.screenName: (context) => const SignUpScreen(),
       },
-      initialRoute: RegisterScreen.screenName,
+      initialRoute: LoginScreen.screeenName,
+      
       theme: MyTheme.myTheme,
     );
   }
