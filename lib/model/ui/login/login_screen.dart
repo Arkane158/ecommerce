@@ -125,9 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
     if (formKey.currentState?.validate() == false) {
       return;
     }
-    DialogeUtils.showMessage(context, 'Loading...');
+    DialogeUtils.showProgressDialog(context, 'Loading...');
     var response =
         await ApiManager.login(emailController.text, passwordController.text);
-    DialogeUtils.showMessage(context, '${response.token}');
+    Navigator.pop(context);
+    DialogeUtils.showMessage(context, 'login successful', posActionTitle: 'Ok');
   }
 }
