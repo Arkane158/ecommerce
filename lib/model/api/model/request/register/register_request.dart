@@ -1,15 +1,9 @@
-/// name : "Ahmed Abd Al-Muti"
-/// email : "nabil1@route.com"
-/// password : "123456"
-/// repassword : "123456"
-/// phone : "01234567801"
-
 class RegisterRequest {
   RegisterRequest({
     this.name,
     this.email,
     this.password,
-    this.repassword,
+    this.rePassword,
     this.phone,
   });
 
@@ -17,14 +11,14 @@ class RegisterRequest {
     name = json['name'];
     email = json['email'];
     password = json['password'];
-    repassword = json['repassword'];
+    rePassword = json['rePassword'];
     phone = json['phone'];
   }
 
   String? name;
   String? email;
   String? password;
-  String? repassword;
+  String? rePassword;
   String? phone;
 
   Map<String, dynamic> toJson() {
@@ -32,7 +26,7 @@ class RegisterRequest {
     map['name'] = name;
     map['email'] = email;
     map['password'] = password;
-    map['repassword'] = repassword;
+    map['rePassword'] = rePassword;
     map['phone'] = phone;
     return map;
   }

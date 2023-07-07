@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:ecommerce/model/api/model/request/LoginRequest.dart';
-import 'package:ecommerce/model/api/model/request/RegisterRequest.dart';
-import 'package:ecommerce/model/api/model/response/LoginResponse.dart';
-import 'package:ecommerce/model/api/model/response/RegisterResponse.dart';
+import 'package:ecommerce/model/api/model/request/login/login_request.dart';
+import 'package:ecommerce/model/api/model/request/register/register_request.dart';
+import 'package:ecommerce/model/api/model/response/login/loginr_response.dart';
+import 'package:ecommerce/model/api/model/response/register/register_response.dart';
 import 'package:http/http.dart' as http;
 
 class ApiManager {
@@ -13,7 +13,7 @@ class ApiManager {
         name: name,
         email: email,
         password: password,
-        repassword: rePassword,
+        rePassword: rePassword,
         phone: phone);
     var url = Uri.https(ApiConstants.baseUrl, ApiConstants.register);
     var response = await http.post(url, body: requestBody.toJson());
@@ -32,7 +32,7 @@ class ApiManager {
 }
 
 class ApiConstants {
-  static const baseUrl = 'route-ecommerce.vercel.app';
+  static const baseUrl = 'route-ecommerce.onrender.com';
   static const register = 'api/v1/auth/signup';
   static const login = 'api/v1/auth/signin';
 }
