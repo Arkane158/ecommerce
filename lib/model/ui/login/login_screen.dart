@@ -1,4 +1,5 @@
 import 'package:ecommerce/model/base/base_state.dart';
+import 'package:ecommerce/model/ui/forgotPassword/forgotPassword/forgot_password_screen.dart';
 import 'package:ecommerce/model/ui/home/home_screen.dart';
 import 'package:ecommerce/model/ui/login/login_navigator.dart';
 import 'package:ecommerce/model/ui/login/login_view_model.dart';
@@ -96,12 +97,18 @@ class _LoginScreenState extends BaseState<LoginScreen, LoginViewModel>
                           hideText: true,
                         ),
                         Center(
-                          child: Text(
-                            'Forgot Password',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontSize: 15),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, ForgotPasswordScreen.screenName);
+                            },
+                            child: Text(
+                              'Forgot Password?',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(fontSize: 15, color: Colors.blue),
+                            ),
                           ),
                         ),
                         Center(

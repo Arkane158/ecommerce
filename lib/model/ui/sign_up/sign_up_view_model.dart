@@ -17,7 +17,7 @@ class SignUpViewModel extends BaseViewModel<SignUpNavigator> {
         navigator?.showMessage(response.mergeErrors(), posActionTitle: 'ok');
         return;
       }
-      navigator?.showMessage('SignUp successfully', posActionTitle: 'ok');
+      navigator?.showMessage('SignUp successfully', posActionTitle: 'ok',);
       appConfigProvider?.setToken(response.token);
       navigator?.navigatHome();
     } catch (e) {
