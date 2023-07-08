@@ -1,4 +1,5 @@
 import 'package:ecommerce/model/provider/app_config_provider.dart';
+import 'package:ecommerce/model/ui/forgotPassword/forgotPassword/forgot_password_screen.dart';
 import 'package:ecommerce/model/ui/home/home_screen.dart';
 import 'package:ecommerce/model/ui/login/login_screen.dart';
 import 'package:ecommerce/my_theme.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.screeenName: (context) => const LoginScreen(),
         SignUpScreen.screenName: (context) => const SignUpScreen(),
         HomeScreen.screenName: (context) => const HomeScreen(),
+        ForgotPasswordScreen.screenName:(context) =>  const ForgotPasswordScreen(),
       },
       initialRoute: LoginScreen.screeenName,
       theme: MyTheme.myTheme,
